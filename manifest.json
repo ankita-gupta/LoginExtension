@@ -1,0 +1,34 @@
+{
+  "manifest_version": 2,  // version of the manifest specification
+
+  "name": "Login",
+  "description": "This extension helps to login",
+  "version": "1.0",
+
+  "browser_action": {                //when the extension is relevant to most pages
+    "default_icon": "login_new.png",
+    "default_popup": "login.html",
+    "default_title": "Ckiller signin"
+  },
+
+  //"page_action":{},   //when the extension's icon should appear or disappear, depending on the page.
+
+
+  "permissions": [
+    "cookies",
+//    "activeTab", //to see the URL of the current tab
+    "http://cas.ckiller.com:8000/api/*",
+    "http://cas.ckiller.com/",
+    "http://*/*"
+  ]
+
+//  "background" : {
+//    "scripts": [
+//      "eventPage.js"
+//    ],
+//    "persistent": false   //event page
+//  }
+
+//  "content_scripts":[{ }]  //interact with web pages & severs,read detail nd modify web pages(DOM)
+
+}

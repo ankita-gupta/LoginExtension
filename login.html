@@ -1,0 +1,98 @@
+<html ng-app='loginApp' ng-controller="login_controller" ng-csp style="height: 280px;">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-aria/angular-aria.js"></script>
+    <script src="/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
+    <script src="/bower_components/angular-material/angular-material.js"></script>
+    <script src="/bower_components/lodash/lodash.min.js"></script>
+    <script src="/bower_components/restangular/dist/restangular.min.js"></script>
+    <script src="login_controller.js"></script>
+    <link rel="stylesheet" type="text/css" href="bower_components/angular/angular-csp.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div ng-hide="log_user">
+    <div class="back_color" style="padding-bottom: 0.5%">
+        <table>
+            <form name="myForm" novalidate>
+                <tr>
+                    <div style="padding-top: 0.5%; padding-bottom: 0.5%"><h4 class="center header_size">Sign in</h4></div></tr>
+                <tr><h3 class="center">Enter your team's domain</h3></tr>
+                <tr><div class="padding"><input type="text" name="domain" placeholder="team domain" ng-model="domain" size="10">.ckiller.com</div></tr>
+                <br>
+                <tr>
+                    <td class="text_padding">Username:</td>
+                    <td><input type="text" name="user.name" ng-model="user.name" maxlength="30" required/></td>
+                    <div ng-messages="user.name.$error" ng-if="user.name.$touched">
+                        <div ng-message when="required">
+                            Username is required
+                        </div>
+                    </div>
+                </tr>
+                <tr>
+                    <td class="text_padding">Password:</td>
+                    <td><input type="password" name="user.password" ng-model="user.password" required></td>
+        <span style="color:red" ng-show="myForm.user.password.$dirty && myForm.user.password.$invalid">
+        <span ng-show="myForm.user.password.$error.required">Password is required.</span>
+        </span>
+                </tr>
+                <span flex></span>
+                <tr>
+                    <td><button md-no-ink class="md-raised md-primary md-default md-button md-light-theme" ng-click="login()">Login</button></td>
+                </tr>
+            </form>
+        </table>
+    </div>
+</div>
+<div ng-show="log_user && !image">
+    <div ng-if="timesheet.length != 0">
+        <h2 class="center text_color">Time Sheets</h2>
+        <div ng-if = "timesheet">
+        <div>
+            <select ng-options="title as each.title for each in project" ng-model="item" ng-chnage="update(items)"></select>
+        </div>
+        <p class="center text_size">Please select the link below to upload the screenshot of respective time sheet.</p>
+        <div class="time_align" ng-repeat="time in timesheet|orderBy :'id'">
+            <div ng-if="time.status != 'consider_for_invoice'">
+                <div layout="row" layout-align="center center" class="md-list-item-text dialog-demo-content">
+                    <div flex="50">
+                        <h4><a href ng-click="screenshot(time)">{{time.start | date:'dd MMM yy ( EEE )'}} <strong>-</strong>
+                            {{time.end | date:'dd MMM yy ( EEE )'}}</a><span ng-if="time.is_timesheet_uploaded == true" style="font-family: wingdings; font-size: 200%;">&#10003;</span></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="padding_bottom"><button md-no-ink class="md-raised md-primary md-default md-button md-light-theme" ng-click="logout()">Logout</button></div>
+        <img ng-src="abc" id="scid" style="display: none; width: auto; height: auto">
+        <div ng-if = "!timesheet" >
+            <p class="center text_size">Sorry,no timesheets available.</p>
+        </div>
+</div>
+    <div ng-show="djangoAuth.authenticated">
+        <h2 class="center text_color">Time Sheets</h2>
+        <span flex></span>
+        <div class="time_align" ng-repeat="time in timesheet">
+            <div ng-if="time.status != 'consider_for_invoice'">
+                <div layout="row" layout-align="center center" class="md-list-item-text dialog-demo-content">
+                    <div flex="50">
+                        <h4><a href ng-click="screenshot(time)">{{time.start | date:'dd MMM yy ( EEE )'}} <strong>-</strong>
+                            {{time.end | date:'dd MMM yy ( EEE )'}}</a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button md-no-ink class="md-raised md-primary md-default md-button md-light-theme" ng-click="logout()">Logout</button>
+    </div>
+    <div ng-if="timesheet.length == 0">
+        <br>
+        <h2 class="center text_color">No Timesheets available...</h2>
+        <button md-no-ink class="md-raised md-primary md-default md-button md-light-theme" ng-click="logout()">Logout</button>
+    </div>
+</div>
+</body>
+</html>
